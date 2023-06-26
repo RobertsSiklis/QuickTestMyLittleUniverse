@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TilePurchaseManager : MonoBehaviour
@@ -10,9 +11,12 @@ public class TilePurchaseManager : MonoBehaviour
     public class OnTilePurchasedEventArgs : EventArgs {
         public HexTile hexTile;
     }
-    private int playerMoney = 11000;
-    private int hexTileCost;
-    private int spentAmount;
+    private int playerWoodResourceAmount = 5000;
+    private int playerStoneResourceAmount = 7000;
+    private int woodResourceHexTileCost;
+    private int stoneResourceHexTileCost;
+    private int woodSpentAmount;
+    private int stoneSpentAmount;
 
     private void Awake() {
         if (Instance == null)
@@ -26,17 +30,27 @@ public class TilePurchaseManager : MonoBehaviour
     }
 
     private void Player_OnPurchasableTileZoneStepped(object sender, Player.OnPurchasableTileZoneSteppedEventArgs e) {
-        hexTileCost = e.hexTile.GetTileCost();
-        spentAmount = e.hexTile.GetSpentAmount();
-        if (playerMoney > 0 && hexTileCost > spentAmount) {
-            playerMoney--;
-            spentAmount++;
+        //Get Tile Cost
+        woodResourceHexTileCost = e.hexTile.GetTileCost(HexTile.CurrecnyType.Wood);
+        stoneResourceHexTileCost = e.hexTile.GetTileCost(HexTile.CurrecnyType.Stone);
+        //Get How much spent on tile purhcase
+        woodSpentAmount = e.hexTile.GetSpentAmount(HexTile.CurrecnyType.Wood);
+        stoneSpentAmount = e.hexTile.GetSpentAmount(HexTile.CurrecnyType.Stone);
+
+        if (playerWoodResourceAmount > 0 && woodResourceHexTileCost > woodSpentAmount) {
+            playerWoodResourceAmount--;
+            woodSpentAmount++;
         }
-        e.hexTile.SetSpentAmount(spentAmount);
-        //Debug.Log("The player has " + playerMoney + " money");
-        //Debug.Log("Player has spent: " + e.hexTile.GetSpentAmount());
-        if (spentAmount == hexTileCost) {
-            //Debug.Log("Tile has been purchased which costs " + e.hexTile.GetTileCost());
+        if (playerStoneResourceAmount > 0 && stoneResourceHexTileCost > stoneSpentAmount) {
+            playerStoneResourceAmount--;
+            stoneSpentAmount++;
+        }
+        e.hexTile.SetSpentAmount(woodSpentAmount, HexTile.CurrecnyType.Wood);
+        e.hexTile.SetSpentAmount(stoneSpentAmount, HexTile.CurrecnyType.Stone);
+        Debug.Log("The player has " + woodSpentAmount + " " + stoneSpentAmount + " money");
+        Debug.Log("Player has spent: " + e.hexTile.GetSpentAmount(HexTile.CurrecnyType.Wood) + " " + e.hexTile.GetSpentAmount(HexTile.CurrecnyType.Stone));
+        if (woodSpentAmount == woodResourceHexTileCost && stoneSpentAmount == stoneResourceHexTileCost) {
+            Debug.Log("Tile has been purchased which costs " + e.hexTile.GetTileCost(HexTile.CurrecnyType.Wood) + " " + e.hexTile.GetTileCost(HexTile.CurrecnyType.Wood));
             OnTilePurchased?.Invoke(this, new OnTilePurchasedEventArgs {
                 hexTile = e.hexTile
             });
