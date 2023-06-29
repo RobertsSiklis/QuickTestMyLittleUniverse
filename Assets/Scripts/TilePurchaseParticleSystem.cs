@@ -17,6 +17,13 @@ public class TilePurchaseParticleSystem : MonoBehaviour {
         tileParticleSystem.Stop();
         Player.Instance.OnPurchasibleTileZoneUnstepped += Player_OnPurchasibleTileZoneUnstepped;
         Player.Instance.OnPurchasableTileZoneStepped += Player_OnPurchasableTileZoneStepped;
+        hexTile.OnPurchaseAmountChange += HexTile_OnPurchaseAmountChange;
+    }
+
+    private void HexTile_OnPurchaseAmountChange(object sender, System.EventArgs e) {
+        if (hexTile.GetSpentAmount(HexTile.CurrecnyType.Wood) == hexTile.GetTileCost(HexTile.CurrecnyType.Wood)){
+            gameObject.SetActive(false);
+        }
     }
 
     private void Player_OnPurchasibleTileZoneUnstepped(object sender, System.EventArgs e) {
@@ -31,9 +38,5 @@ public class TilePurchaseParticleSystem : MonoBehaviour {
             e.hexTile.GetHexTileParticleSystem().tileParticleSystem.Play();
             state = State.Stepped;
         }
-    }
-
-    private void Update() {
-        Debug.Log(state);
     }
 }

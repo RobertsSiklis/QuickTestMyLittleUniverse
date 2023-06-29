@@ -8,22 +8,31 @@ public class ProgressUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI stoneSpentAmountText;
     [SerializeField] private TextMeshProUGUI startWoodCostText;
     [SerializeField] private TextMeshProUGUI startStoneCostText;
-
+    [SerializeField] private Transform WoodUI;
+    [SerializeField] private Transform StoneUI;
     private void Start() {
         hexTile.OnPurchaseAmountChange += HexTile_OnPurchaseAmountChange;
         TilePurchaseManager.Instance.OnTilePurchased += TilePurchaseManager_OnTilePurchased;
-        if (hexTile.GetTileCost(HexTile.CurrecnyType.Wood) < 1000) {
-            startWoodCostText.text = "/" + hexTile.GetTileCost(HexTile.CurrecnyType.Wood).ToString();
+        if (hexTile.GetTileCost(HexTile.CurrecnyType.Wood) > 0){
+            if (hexTile.GetTileCost(HexTile.CurrecnyType.Wood) < 1000) {
+                startWoodCostText.text = "/" + hexTile.GetTileCost(HexTile.CurrecnyType.Wood).ToString();
+            } else {
+                startWoodCostText.text = "/" + (hexTile.GetTileCost(HexTile.CurrecnyType.Wood) / 1000f).ToString("0.#") + "K";
+            }
         } else {
-            startWoodCostText.text = "/" + (hexTile.GetTileCost(HexTile.CurrecnyType.Wood) / 1000f).ToString("0.#") + "K";
+            WoodUI.gameObject.SetActive(false);
         }
 
-        if (hexTile.GetTileCost(HexTile.CurrecnyType.Stone) < 1000) {
-            startStoneCostText.text = "/" + hexTile.GetTileCost(HexTile.CurrecnyType.Stone).ToString();
+
+        if (hexTile.GetTileCost(HexTile.CurrecnyType.Stone) > 0){
+            if (hexTile.GetTileCost(HexTile.CurrecnyType.Stone) < 1000) {
+                startStoneCostText.text = "/" + hexTile.GetTileCost(HexTile.CurrecnyType.Stone).ToString();
+            } else {
+                startStoneCostText.text = "/" + (hexTile.GetTileCost(HexTile.CurrecnyType.Stone) / 1000f).ToString("0.#") + "K";
+            }
         } else {
-            startStoneCostText.text = "/" + (hexTile.GetTileCost(HexTile.CurrecnyType.Stone) / 1000f).ToString("0.#") + "K";
+            StoneUI.gameObject.gameObject.SetActive(false);
         }
-        
     }
 
     private void TilePurchaseManager_OnTilePurchased(object sender, TilePurchaseManager.OnTilePurchasedEventArgs e) {
