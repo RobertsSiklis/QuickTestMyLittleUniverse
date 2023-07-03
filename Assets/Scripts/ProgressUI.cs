@@ -8,10 +8,11 @@ public class ProgressUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI stoneSpentAmountText;
     [SerializeField] private TextMeshProUGUI startWoodCostText;
     [SerializeField] private TextMeshProUGUI startStoneCostText;
-    [SerializeField] private Transform WoodUI;
-    [SerializeField] private Transform StoneUI;
+    [SerializeField] private Transform woodUI;
+    [SerializeField] private Transform stoneUI;
     private void Start() {
         hexTile.OnPurchaseAmountChange += HexTile_OnPurchaseAmountChange;
+        hexTile.OnPurchaseAmountChange += HexTile_OnPurchaseAmountMax;
         TilePurchaseManager.Instance.OnTilePurchased += TilePurchaseManager_OnTilePurchased;
         if (hexTile.GetTileCost(HexTile.CurrecnyType.Wood) > 0){
             if (hexTile.GetTileCost(HexTile.CurrecnyType.Wood) < 1000) {
@@ -20,7 +21,7 @@ public class ProgressUI : MonoBehaviour
                 startWoodCostText.text = "/" + (hexTile.GetTileCost(HexTile.CurrecnyType.Wood) / 1000f).ToString("0.#") + "K";
             }
         } else {
-            WoodUI.gameObject.SetActive(false);
+            woodUI.gameObject.SetActive(false);
         }
 
 
@@ -31,13 +32,23 @@ public class ProgressUI : MonoBehaviour
                 startStoneCostText.text = "/" + (hexTile.GetTileCost(HexTile.CurrecnyType.Stone) / 1000f).ToString("0.#") + "K";
             }
         } else {
-            StoneUI.gameObject.gameObject.SetActive(false);
+            stoneUI.gameObject.gameObject.SetActive(false);
         }
     }
 
     private void TilePurchaseManager_OnTilePurchased(object sender, TilePurchaseManager.OnTilePurchasedEventArgs e) {
         if (e.hexTile == hexTile) {
             Hide();
+        }
+    }
+
+    private void HexTile_OnPurchaseAmountMax(object sender, System.EventArgs e) {
+        if (hexTile.GetSpentAmount(HexTile.CurrecnyType.Wood) >= hexTile.GetTileCost(HexTile.CurrecnyType.Wood)) {
+            woodUI.gameObject.SetActive(false);
+        }
+
+        if (hexTile.GetSpentAmount(HexTile.CurrecnyType.Stone) >= hexTile.GetTileCost(HexTile.CurrecnyType.Stone)) {
+            stoneUI.gameObject.SetActive(false);
         }
     }
 

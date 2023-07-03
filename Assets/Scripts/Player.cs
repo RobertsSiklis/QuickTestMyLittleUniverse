@@ -13,43 +13,74 @@ public class Player : MonoBehaviour {
     [SerializeField] private float movementSpeed = 10f;
     [SerializeField] private float rotationSpeed = 10f;
     [SerializeField] private float fallSpeed = 1000f;
-    [SerializeField] private GameInput gameInput;
     [SerializeField] private float groundDrag = 5;
+    [SerializeField] private GameInput gameInput;
     [SerializeField] private LayerMask whatIsGround;
     [SerializeField] private LayerMask purchaseTileZone;
     private float groundRayDistance = 0.5f;
     private Rigidbody rb;
     private CapsuleCollider capsuleCollider;
-
     private bool isWalking;
     private Vector2 inputVector;
-    private Vector3 moveDir;
+    private Vector3 movementDirection;
 
     private void Awake() {
         rb = GetComponent<Rigidbody>();
         capsuleCollider = GetComponent<CapsuleCollider>();
+        CheckIfPlayerInstanceIsNull();
+    }
 
+    private void CheckIfPlayerInstanceIsNull() {
         if (Instance == null) {
             Instance = this;
-        }
-        else {
+        } else {
             Debug.Log("There is more than one player instance");
         }
     }
 
     private void Update() {
 
-        HandleInput();
+        HandleUserMovementInput();
+        CheckIfPlayerIsGrounded();
+        HandleHexTileInteractions();
+    }
 
+    private void HandleUserMovementInput() {
+        GetInputVector();
+        SetMovementDirectionFromInputVector();
+    }
+
+    private void GetInputVector() {
+        inputVector = gameInput.GetMovementVectorNormalized();
+    }
+
+    private void SetMovementDirectionFromInputVector() {
+        movementDirection = new Vector3(inputVector.x, 0, inputVector.y);
+    }
+
+    private void CheckIfPlayerIsGrounded() {
         if (IsGrounded()) {
             rb.drag = groundDrag;
         }
         else {
             rb.drag = 0;
         }
-
-        HandleHexTileInteractions();
     }
+
+    private void HandleHexTileInteractions() {
+
+        if (Physics.Raycast(capsuleCollider.bounds.center, Vector3.down, out RaycastHit rayCastHit, capsuleCollider.bounds.extents.y + groundRayDistance, purchaseTileZone)) {
+            if (rayCastHit.transform.TryGetComponent(out HexTile hextile)) {
+                //Has HexTile
+                OnPurchasableTileZoneStepped?.Invoke(this, new OnPurchasableTileZoneSteppedEventArgs {
+                    hexTile = hextile
+                });
+            }
+        } else {
+            OnPurchasibleTileZoneUnstepped?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
     private void FixedUpdate() {
 
         HandleMovement();
@@ -65,16 +96,16 @@ public class Player : MonoBehaviour {
         return rayCastHit.collider != null;
     }
     private void HandleMovement() {
-        isWalking = moveDir != Vector3.zero;
+        isWalking = movementDirection != Vector3.zero;
         if (isWalking) {
             float moveDistance = movementSpeed * Time.fixedDeltaTime;
 
             //Movement
             float rotateDistance = rotationSpeed * Time.fixedDeltaTime;
-            rb.MovePosition(transform.position + (moveDir * moveDistance));
+            rb.MovePosition(transform.position + (movementDirection * moveDistance));
 
             //Rotation
-            Quaternion tr = Quaternion.LookRotation(moveDir);
+            Quaternion tr = Quaternion.LookRotation(movementDirection);
             Quaternion targeRotation = Quaternion.Slerp(rb.rotation, tr, rotateDistance);
             rb.MoveRotation(targeRotation);
         }
@@ -83,24 +114,5 @@ public class Player : MonoBehaviour {
             rb.AddForce(Vector3.down * (fallSpeed * Time.fixedDeltaTime), ForceMode.Force);
         }
 
-    }
-
-    private void HandleInput() {
-        inputVector = gameInput.GetMovementVectorNormalized();
-        moveDir = new Vector3(inputVector.x, 0, inputVector.y);
-    }
-
-    private void HandleHexTileInteractions() {
-        if (Physics.Raycast(capsuleCollider.bounds.center, Vector3.down, out RaycastHit rayCastHit, capsuleCollider.bounds.extents.y + groundRayDistance, purchaseTileZone)) {
-            if (rayCastHit.transform.TryGetComponent(out HexTile hextile)) {
-                //Has HexTile
-                OnPurchasableTileZoneStepped?.Invoke(this, new OnPurchasableTileZoneSteppedEventArgs {
-                    hexTile = hextile
-                });
-            }
-
-        } else {
-            OnPurchasibleTileZoneUnstepped?.Invoke(this, EventArgs.Empty);
-        }
     }
 }

@@ -209,12 +209,12 @@ PrefabInstance:
     - target: {fileID: 2599843446650424557, guid: 827d6c721228e2641ad3d8595a0fd62c,
         type: 3}
       propertyPath: woodCost
-      value: 200
+      value: 700
       objectReference: {fileID: 0}
     - target: {fileID: 2599843446650424557, guid: 827d6c721228e2641ad3d8595a0fd62c,
         type: 3}
       propertyPath: stoneCost
-      value: 700
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 2599843446650424557, guid: 827d6c721228e2641ad3d8595a0fd62c,
         type: 3}

@@ -126,8 +126,8 @@ MonoBehaviour:
   stoneSpentAmountText: {fileID: 6014575060988841340}
   startWoodCostText: {fileID: 257912611229648469}
   startStoneCostText: {fileID: 7932659503383139951}
-  WoodUI: {fileID: 1753692488485075822}
-  StoneUI: {fileID: 1590593718939811106}
+  woodUI: {fileID: 1753692488485075822}
+  stoneUI: {fileID: 1590593718939811106}
 --- !u!114 &8228266659059852916
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10376,8 +10376,8 @@ MonoBehaviour:
   stoneSpentAmountText: {fileID: 7691676736455501406}
   startWoodCostText: {fileID: 800352998883426393}
   startStoneCostText: {fileID: 181921400435991219}
-  WoodUI: {fileID: 4318670608871141498}
-  StoneUI: {fileID: 8709204777619135515}
+  woodUI: {fileID: 4318670608871141498}
+  stoneUI: {fileID: 8709204777619135515}
 --- !u!114 &4691722389576880675
 MonoBehaviour:
   m_ObjectHideFlags: 0
