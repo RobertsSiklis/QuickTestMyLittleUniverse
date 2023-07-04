@@ -47,10 +47,7 @@ public class TilePurchaseManager : MonoBehaviour
         }
         e.hexTile.SetSpentAmount(woodSpentAmount, HexTile.CurrecnyType.Wood);
         e.hexTile.SetSpentAmount(stoneSpentAmount, HexTile.CurrecnyType.Stone);
-        Debug.Log("The player has " + woodSpentAmount + " " + stoneSpentAmount + " money");
-        Debug.Log("Player has spent: " + e.hexTile.GetSpentAmount(HexTile.CurrecnyType.Wood) + " " + e.hexTile.GetSpentAmount(HexTile.CurrecnyType.Stone));
         if (woodSpentAmount == woodResourceHexTileCost && stoneSpentAmount == stoneResourceHexTileCost) {
-            Debug.Log("Tile has been purchased which costs " + e.hexTile.GetTileCost(HexTile.CurrecnyType.Wood) + " " + e.hexTile.GetTileCost(HexTile.CurrecnyType.Wood));
             OnTilePurchased?.Invoke(this, new OnTilePurchasedEventArgs {
                 hexTile = e.hexTile
             });

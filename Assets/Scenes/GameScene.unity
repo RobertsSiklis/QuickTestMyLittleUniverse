@@ -521,7 +521,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  m_LocalRotation: {x: 0.36155206, y: -0.16594289, z: 0.065561876, w: 0.91512007}
+  m_LocalRotation: {x: 0.3615521, y: -0.16594288, z: 0.06556186, w: 0.91512007}
   m_LocalPosition: {x: 3, y: 16, z: -8.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -657,8 +657,8 @@ MonoBehaviour:
   movementSpeed: 10
   rotationSpeed: 10
   fallSpeed: 1000
-  gameInput: {fileID: 1910281927}
   groundDrag: 5
+  gameInput: {fileID: 1910281927}
   whatIsGround:
     serializedVersion: 2
     m_Bits: 256
@@ -954,7 +954,7 @@ PrefabInstance:
     - target: {fileID: 5131276512998572608, guid: 827d6c721228e2641ad3d8595a0fd62c,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7494104833878247279, guid: 827d6c721228e2641ad3d8595a0fd62c,
         type: 3}
@@ -1236,7 +1236,7 @@ PrefabInstance:
     - target: {fileID: 5131276512998572608, guid: 827d6c721228e2641ad3d8595a0fd62c,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7494104833878247279, guid: 827d6c721228e2641ad3d8595a0fd62c,
         type: 3}
@@ -1994,7 +1994,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1441249009}
-  m_LocalRotation: {x: 0.36155206, y: -0.16594289, z: 0.065561876, w: 0.91512007}
+  m_LocalRotation: {x: 0.3615521, y: -0.16594288, z: 0.06556186, w: 0.91512007}
   m_LocalPosition: {x: 3, y: 16, z: -8.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
